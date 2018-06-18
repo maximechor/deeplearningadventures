@@ -144,6 +144,52 @@ train_video, test_video, valid_video = LoadRecolaVideo()
 #print("valid_video_test_shape:", valid_video.shape)
 
 
+def LoadRecolaVideo_WithoutPreprocessing():
+    '''
+     Load Recola Video
+    '''
+    ##################LOAD VIDEO DATA###############################
+    x_train_video= arff.load(open('/data/scratch/Odilon/concatenated/features_video_geometric_features/train_123456789.arff', 'r'))
+    x_test_video = arff.load(open('/data/scratch/Odilon/concatenated/features_video_geometric_features/test_123456789.arff', 'r'))
+    x_valid_video = arff.load(open('/data/scratch/Odilon/concatenated/features_video_geometric_features/dev_123456789.arff','r'))
+    
+    x_train_video_keys = list(x_train_video.keys())
+    
+    #print("x_train_video_keys:\n",x_train_video_keys)
+    x_train_video = [row[2:] for row in x_train_video['data']]
+    x_train_video = np.array(x_train_video)
+    x_test_video = [row[2:] for row in x_test_video['data']]
+    x_test_video = np.array(x_test_video)
+    x_valid_video = [row[2:] for row in x_valid_video['data']]
+    x_valid_video = np.array(x_valid_video)
+    
+    return x_train_video, x_test_video,x_valid_video
+    
+
+def LoadRecolaAudio_WithoutPreprocessing():
+    ######################## LOAD AUDIO DATA ######################
+ 
+    x_train_audio =arff.load(open('/data/scratch/Odilon/concatenated/features_audio/train_123456789.arff', 'r'))
+    x_test_audio =arff.load(open('/data/scratch/Odilon/concatenated/features_audio/test_123456789.arff','r'))
+    x_valid_audio=arff.load(open('/data/scratch/Odilon/concatenated/features_audio/dev_123456789.arff','r'))
+    
+    x_train_audio =[row[2:] for row in x_train_audio['data']]
+    x_train_audio = np.array(x_train_audio)
+    x_test_audio =[row[2:] for row in x_test_audio['data']]
+    x_test_audio = np.array(x_test_audio)
+    x_valid_audio = [row[2:] for row in x_valid_audio['data']]
+    x_valid_audio = np.array(x_valid_audio) 
+   
+
+    return x_train_audio, x_test_audio, x_valid_audio
+
+train_audio, test_audio, valid_audio =  LoadRecolaAudio_WithoutPreprocessing()
+
+#print("train_audio_test.shape:", train_audio.shape)
+#print("test_audio_test.shape:", test_audio.shape)
+#print("valid_audio_test.shape:",valid_audio.shape)
+
+
 def LoadRecolaAudio():
     ######################## LOAD AUDIO DATA ######################
  
@@ -176,7 +222,7 @@ def LoadRecolaAudio():
 
     return x_train_audio, x_test_audio, x_valid_audio
 
-train_audio, test_audio, valid_audio =  LoadRecolaAudio()
+#train_audio, test_audio, valid_audio =  LoadRecolaAudio()
 #print("train_audio_test.shape:", train_audio.shape)
 #print("test_audio_test.shape:", test_audio.shape)
 #print("valid_audio_test.shape:",valid_audio.shape)
