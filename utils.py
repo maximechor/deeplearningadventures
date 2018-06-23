@@ -96,7 +96,7 @@ def CreateFileCSV_Pandas(fileName, col1, val1, col2, val2):
 #CreateFileCSV_Pandas('testcsvPanda.csv','score', '2223', '', '')
 
 
-def LoadRecolaVideo():
+def LoadRecolaVideo(preprocessingData):
     '''
      Load Recola Video
     '''
@@ -115,33 +115,41 @@ def LoadRecolaVideo():
     x_valid_video = [row[2:] for row in x_valid_video['data']]
     x_valid_video = np.array(x_valid_video)
     
-    ##############Normalize Data##################
-    x_train_video = np.asarray(x_train_video,'float32')
-    x_train_video = x_train_video.astype('float32')/255.
-    x_test_video = np.asarray(x_test_video,'float32')
-    x_test_video = x_test_video.astype('float32')/255.
-    x_valid_video = np.asarray(x_valid_video,'float32')
-    x_valid_video = x_valid_video.astype('float32')/255.
+    if preprocessingData == "By255":
+       ##############Normalize Data##################
+        print("preprocessingData:", preprocessingData)
+        x_train_video = np.asarray(x_train_video,'float32')
+        x_train_video = x_train_video.astype('float32')/255.
+        x_test_video = np.asarray(x_test_video,'float32')
+        x_test_video = x_test_video.astype('float32')/255.
+        x_valid_video = np.asarray(x_valid_video,'float32')
+        x_valid_video = x_valid_video.astype('float32')/255.
 
-    # To be tested???
-    #x_train_video = preprocessing.normalize(x_train_video, norm ='l2')
-    #x_test_video = preprocessing.normalize(x_test_video, norm ='l2')
-    #x_valid_video = preprocessing.normalize(x_valid_video, norm ='l2')
+    elif preprocessingData == "l2":
+    	x_train_video = preprocessing.normalize(x_train_video, norm ='l2')
+        x_test_video = preprocessing.normalize(x_test_video, norm ='l2')
+        x_valid_video = preprocessing.normalize(x_valid_video, norm ='l2')
+    
+    #elif preprocessingData == "None":
+    #      print("preprocessingData:",preprocessingData)
+    #      x_train_video = x_train_video
+    #      x_test_video  = x_test_video
+    #      x_valid_video = x_valid_video 
 
     ##################Reshape Data#################
     x_train_video = x_train_video.reshape((len(x_train_video), np.prod(x_train_video.shape[1:])))
     x_test_video = x_test_video.reshape((len(x_test_video), np.prod(x_test_video.shape[1:])))
     x_valid_video = x_valid_video.reshape((len(x_valid_video), np.prod(x_valid_video.shape[1:])))
-    #print("train_video.shape:", x_train_video.shape)
-    #print("test_video.shape:", x_test_video.shape)
-    #print("valid_video.shape:", x_valid_video.shape)
+    print("train_video.shape:", x_train_video.shape)
+    print("test_video.shape:", x_test_video.shape)
+    print("valid_video.shape:", x_valid_video.shape)
     
     return x_train_video, x_test_video,x_valid_video
 
-train_video, test_video, valid_video = LoadRecolaVideo()
-#print("train_video_test_shape:",train_video.shape)
-#print("test_video_test_shape:", test_video.shape)
-#print("valid_video_test_shape:", valid_video.shape)
+train_video, test_video, valid_video = LoadRecolaVideo("By255")
+print("train_video_test_shape:",train_video.shape)
+print("test_video_test_shape:", test_video.shape)
+print("valid_video_test_shape:", valid_video.shape)
 
 
 def LoadRecolaVideo_WithoutPreprocessing():
