@@ -295,7 +295,7 @@ now = time.strftime("%c")
 tbcallback = TensorBoard(log_dir='./tmp/'+now, histogram_freq=0, write_graph=True, write_images=True )
 
 autoencoderSharedFeatures = autoencoder.fit([x_train_video, x_train_audio, x_train_ecg, x_train_eda, x_train_video_appea], [x_train_video, x_train_audio,x_train_ecg, x_train_eda, x_train_video_appea],
-                 epochs =3,
+                 epochs =15,
                  verbose =2,
                  batch_size = 50,
                  shuffle = True,
@@ -326,6 +326,40 @@ plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
 plt.savefig('/home/AN84020/training/featuresLearning/Imagemodels/modelaccuracyAudio_ShF_T100.jpeg')
 
+
+plt.clf()
+# summarize history for accuracy ecg
+plt.plot(autoencoderSharedFeatures.history['output_ecg_acc'])
+plt.plot(autoencoderSharedFeatures.history['val_output_ecg_acc'])
+plt.title('Model Accuracy ECG')
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.savefig('/home/AN84020/training/featuresLearning/Imagemodels/modelaccuracyECG_ShF_T100.jpeg')
+
+
+plt.clf()
+# summarize history for accuracy eda
+plt.plot(autoencoderSharedFeatures.history['output_eda_acc'])
+plt.plot(autoencoderSharedFeatures.history['val_output_eda_acc'])
+plt.title('Model Accuracy EDA')
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.savefig('/home/AN84020/training/featuresLearning/Imagemodels/modelaccuracyEDA_ShF_T100.jpeg')
+
+
+plt.clf()
+# summarize history for accuracy video appearance
+plt.plot(autoencoderSharedFeatures.history['output_video_appearance_acc'])
+plt.plot(autoencoderSharedFeatures.history['val_output_appearance_acc'])
+plt.title('Model Accuracy Video Appearance')
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.savefig('/home/AN84020/training/featuresLearning/Imagemodels/modelaccuracyVideoAppearance_ShF_T100.jpeg')
+
+
 plt.clf()
 # summarize history for loss video
 plt.plot(autoencoderSharedFeatures.history['output_video_loss'])
@@ -337,7 +371,7 @@ plt.legend(['train', 'test'], loc='upper left')
 plt.savefig('/home/AN84020/training/featuresLearning/Imagemodels/modellossVideo_ShF_T100.jpeg')
 
 plt.clf()
-# summarize history for loss
+# summarize history for loss audio
 plt.plot(autoencoderSharedFeatures.history['output_audio_loss'])
 plt.plot(autoencoderSharedFeatures.history['val_output_audio_loss'])
 plt.title('Model Loss Audio')
@@ -345,6 +379,39 @@ plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
 plt.savefig('/home/AN84020/training/featuresLearning/Imagemodels/modellossAudio_ShF_T100.jpeg')
+
+plt.clf()
+# summarize history for loss ecg
+plt.plot(autoencoderSharedFeatures.history['output_ecg_loss'])
+plt.plot(autoencoderSharedFeatures.history['val_output_ecg_loss'])
+plt.title('Model Loss ECG')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.savefig('/home/AN84020/training/featuresLearning/Imagemodels/modellossECG_ShF_T100.jpeg')
+
+
+plt.clf()
+# summarize history for loss eda
+plt.plot(autoencoderSharedFeatures.history['output_eda_loss'])
+plt.plot(autoencoderSharedFeatures.history['val_output_eda_loss'])
+plt.title('Model Loss EDA')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.savefig('/home/AN84020/training/featuresLearning/Imagemodels/modellossEDA_ShF_T100.jpeg')
+
+
+plt.clf()
+# summarize history for loss video appearance
+plt.plot(autoencoderSharedFeatures.history['output_video_appearance_loss'])
+plt.plot(autoencoderSharedFeatures.history['val_output_video_appearance_loss'])
+plt.title('Model Loss Video Appearnce')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.savefig('/home/AN84020/training/featuresLearning/Imagemodels/modellossVideoAppearance_ShF_T100.jpeg')
+
 
 plt.clf()
 # summarize history for loss
@@ -359,7 +426,7 @@ plt.savefig('/home/AN84020/training/featuresLearning/Imagemodels/modelloss_ShF_T
 
 ############################### Encode and Decode some Input Vectors ##########################
 
-encoded_feature_train = encoder.predict([x_train_video, x_train_audio, x_train_ecg,x_train_eda, x_train_video_appea])
+encoded_feature_train = encoder.predict([x_train_video, x_train_audio, x_train_ecg, x_train_eda, x_train_video_appea])
 encoded_feature_dev = encoder.predict([x_valid_video, x_valid_audio, x_train_ecg, x_train_eda, x_train_video_appea])
 #decoded_video_features = decoder2.predict( encoded_video_features )
 #decoded_audio_features = decoder1.predict( encoded_audio_features )
