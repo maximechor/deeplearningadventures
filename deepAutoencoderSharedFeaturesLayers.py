@@ -352,7 +352,7 @@ plt.savefig('/home/AN84020/training/featuresLearning/Imagemodels/modelaccuracyED
 plt.clf()
 # summarize history for accuracy video appearance
 plt.plot(autoencoderSharedFeatures.history['output_video_appearance_acc'])
-plt.plot(autoencoderSharedFeatures.history['val_output_appearance_acc'])
+plt.plot(autoencoderSharedFeatures.history['val_output_video_appearance_acc'])
 plt.title('Model Accuracy Video Appearance')
 plt.ylabel('accuracy')
 plt.xlabel('epoch')
