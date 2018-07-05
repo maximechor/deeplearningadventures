@@ -458,7 +458,8 @@ train_video_appea, test_video_appea, valid_video_appea = LoadRecolaVideoAppearan
 #print("test_video_appea_test_shape:", test_video_appea.shape)
 #print("valid_video_appea_test_shape:", valid_video_appea.shape)
 
-
+def CCC_scorer(estimator, X, y=None):
+    return float(CCC(y, estimator.predict(X)))
 
 
 
