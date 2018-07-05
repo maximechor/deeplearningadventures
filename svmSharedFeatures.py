@@ -96,42 +96,59 @@ print("Start SVM")
 ################## GridSearchCV And Linear SVR#####################
 
 tunned_parameters = {'C':'C'}
-tunned_parameters["C"] = [0.00001,0.0001,0.001,0.1,1]
+tunned_parameters["C"] = [0.0000001,0.000001, 0.00001,0.0001,0.001,0.01,0.1]
 
-regr= LinearSVR(random_state=None)
+regr_valence = LinearSVR(random_state=None)
+regr_arousal = LinearSVR(random_state=None)
 
-gridsearch = GridSearchCV(regr, tunned_parameters,cv=20, verbose=20)
+#gridsearch_valence = GridSearchCV(regr_valence, tunned_parameters,cv=20, verbose=140)
+#gridsearch_arousal = GridSearchCV(regr_arousal, tunned_parameters,cv=20, verbose=140)
 
-#gridsearch.fit(encoded_train, train_arousal.ravel())
-gridsearch.fit(encoded_train, train_valence.ravel())
+gridsearch_valence = GridSearchCV(regr_valence, tunned_parameters, scoring=utils.CCC_scorer, cv=20, verbose=140)
+gridsearch_arousal = GridSearchCV(regr_arousal, tunned_parameters, scoring=utils.CCC_scorer, cv=20, verbose=140)
 
-hyper_best_params= gridsearch.best_params_['C']
-print("best params:", hyper_best_params)
+gridsearch_valence.fit(encoded_train, train_valence.ravel())
+gridsearch_arousal.fit(encoded_train, train_arousal.ravel())
 
-best_gridsearch_score= gridsearch.best_score_
-print("best_gridsearch_score:",best_gridsearch_score)
+hyper_best_params_valence = gridsearch_valence.best_params_['C']
+print("valence best params:", hyper_best_params_valence)
+hyper_best_params_arousal = gridsearch_arousal.best_params_['C']
+print("arousal best params:", hyper_best_params_arousal)
+
+best_gridsearch_score_valence= gridsearch_valence.best_score_
+print("valence best_gridsearch_score:",best_gridsearch_score_valence)
+best_gridsearch_score_arousal= gridsearch_arousal.best_score_
+print("arousal best_gridsearch_score:",best_gridsearch_score_arousal)
  
-best_gridsearch_estimator = gridsearch.best_estimator_
-print("best_gridsearch_estimator:", best_gridsearch_estimator)
+best_gridsearch_estimator_valence = gridsearch_valence.best_estimator_
+print("valence best_gridsearch_estimator:", best_gridsearch_estimator_valence)
+best_gridsearch_estimator_arousal = gridsearch_arousal.best_estimator_
+print("arousal best_gridsearch_estimator:", best_gridsearch_estimator_arousal)
 
-best_coef = best_gridsearch_estimator.coef_
-print("best_coef:", best_coef)
-print("best_coef_shape:", best_coef.shape)
+best_coef_valence = best_gridsearch_estimator_valence.coef_
+print("best_coef_valence:", best_coef_valence)
+#print("best_coef_shape:", best_coef.shape)
+best_coef_arousal = best_gridsearch_estimator_arousal.coef_
+print("best_coef_arousal:", best_coef_arousal)
 
-prediction = best_gridsearch_estimator.predict(encoded_dev)
-print("prediction:", prediction)
-print("prediction.shape:", prediction.shape)
+prediction_valence = best_gridsearch_estimator_valence.predict(encoded_dev)
+print("valence prediction:", prediction_valence)
+print("prediction_valence.shape:", prediction_valence.shape)
+prediction_arousal = best_gridsearch_estimator_arousal.predict(encoded_dev)
+print("arousal prediction:", prediction_arousal)
+print("prediction_arousal.shape:", prediction_arousal.shape)
 
-#score = best_gridsearch_estimator.score(encoded_dev, dev_arousal)
-score = best_gridsearch_estimator.score(encoded_dev, dev_valence)
-print("score:",score)
+score_valence = best_gridsearch_estimator_valence.score(encoded_dev, dev_valence)
+print("score_valence:",score_valence)
+score_arousal = best_gridsearch_estimator_arousal.score(encoded_dev, dev_arousal)
+print("score_arousal:",score_arousal)
 
 ####################Calculate CCC#############
 
-#val_ccc = utils.CCC(dev_arousal,prediction)
-val_ccc = utils.CCC(dev_valence, prediction)
-
-print("val_ccc:", val_ccc)
+val_ccc_valence = utils.CCC(dev_valence, prediction_valence)
+print("val_ccc_valence:", val_ccc_valence)
+val_ccc_arousal = utils.CCC(dev_arousal, prediction_arousal)
+print("val_ccc_arousal:", val_ccc_arousal)
 
 #print("Start Plotting")
 #plt.plot(encoded_train,predict_regr, color ='c', lw =2, label ='Linear model')
@@ -143,6 +160,9 @@ print("val_ccc:", val_ccc)
 
 
 #######################Write file to save val_CCC###############
-df = pd.DataFrame(data={'Val CCC':[val_ccc], 'score':[score]})
-#df.to_csv('/home/AN84020/training/featuresLearning/valCCC_3_arousal.csv', sep=',', index = False)
-df.to_csv('/home/AN84020/training/featuresLearning/valCCC_3_valence.csv', sep=',', index=False)
+df = pd.DataFrame(data={'Val CCC':[val_ccc_valence], 'score':[score_valence]})
+df.to_csv('/home/AN84020/training/featuresLearning/valCCC_1_valence.csv', sep=',', index = False)
+df = pd.DataFrame(data={'Val CCC':[val_ccc_arousal], 'score':[score_arousal]})
+df.to_csv('/home/AN84020/training/featuresLearning/valCCC_1_arousal.csv', sep=',', index=False)
+
+print("CCC")
